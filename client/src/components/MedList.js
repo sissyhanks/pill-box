@@ -1,7 +1,7 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-
+import Medtable from "./Medtable";
 
 export default function MedList() {
 
@@ -40,30 +40,36 @@ export default function MedList() {
                 "http://localhost:3001/api/users/saveMed",
                 medicineData
               );
-              // await getLoggedIn();
-              // history.push("/");
+             
             } catch (err) {
               console.error(err);
             }
           };
-    const handleDeleteMed = async (event) => {
-        event.preventDefault();
-        try{
-            
-        } catch (err){
-            console.error(err)
-        }
-    };
+    
 
     const [medications, setMedications] = React.useState([])
+    const [medlist, getMedList] = useState('');
 
-    React.useEffect(() => {
+    useEffect(() => {
         getData()
+        getUserData();
     }, [])
 
     const getData = async () => {
         setMedications()
+        
     }
+
+    const getUserData = () => {
+        axios.get("http://localhost:3001/api/users/getSingleUser")
+        .then((response) => {
+            const medlist = response.data.medList
+            console.log(medlist)
+            getMedList(medlist);
+        })
+        .catch(error => console.log(error));
+      }
+          
 
     const renderHeader = () => {
         let headerElement = ['id', 'title', 'morning', 'afternoon', 'evening', 'night', 'as needed']
@@ -72,20 +78,10 @@ export default function MedList() {
             return <th key={index}>{key.toUpperCase()}</th>
         })
     }
-//     const /= () => {
-        
-//         map(item => <div>{title}</div>)
-//             return(
-//                 <div></div>
-//             )
-//           })
-//         } catch (err){
-//             console.error(err)
-//         }
-// }
+
     const renderForm = () => {
         return(
-            <div >
+            <div>
             <form onSubmit={handlenewMedSubmit} className="row g-3">
                 
                 <label for="title" className="form-label">Medication Name</label>
@@ -110,7 +106,7 @@ export default function MedList() {
                 <input type="checkbox"  className="form-check-inline" id="setAsNeeded" onChange={(e) => setAsNeeded(e.target.checked)} value={as_needed} />
                 
                   <div className="col-12">
-  <button className="btn btn-outline-info" type="submit">
+                    <button className="btn btn-outline-info" type="submit">
                 add med
               </button>
 
@@ -119,49 +115,30 @@ export default function MedList() {
             </div>
         )}
 
-    const renderBody = () => {
-        try {
-        axios.get(
-           "http://localhost:3001/api/users/getSingleUser")
-         .then(function(response){
-           //   const medTitle = response.medList.title
-           //   const medmorning = response.medList.morning
-           //   const medafternoon =response.medList.afternoon
-           //   const medevening =response.medList.evening
-           //   const mednight= response.medList.night
-           //   const medas_needed= response.medList.as_needed
-           const medications = response.data
-           console.log(medications.medList)
-        // return medications.map(({ id, title, morning, afternoon, evening, night, as_needed }) => {
-        //     return (
-        //         <tr key={id}>
-        //             <td>{id}</td>
-        //             <td>{title}</td>
-        //             <td><input type="checkbox" id={`medication_${id}_morning`} checked={morning} aria-label={`Checkbox for ${title} in the morning`} /></td>
-        //             <td><input type="checkbox" id={`medication_${id}_afternoon`} checked={afternoon} aria-label={`Checkbox for ${title} in the afternoon`} /></td>
-        //             <td><input type="checkbox" id={`medication_${id}_evening`} checked={evening} aria-label={`Checkbox for ${title} in the evening`} /></td>
-        //             <td><input type="checkbox" id={`medication_${id}_night`} checked={night} aria-label={`Checkbox for ${title} in the night`} /></td>
-        //             <td><input type="checkbox" id={`medication_${id}_as_needed`} checked={as_needed} aria-label={`Checkbox for ${title} as needed`} /></td>
-        //         </tr>
-        //     )
-        // })
-    })}catch(err){
-        console.log(err)
-    }};
+  
+  
+
+    
+    
 
     return (
         <>
             <h1 id='title'>Your Medication List</h1>
+            
             <table className='table table-striped'>
                 <thead>
                     <tr>{renderHeader()}</tr>
+                    
                 </thead>
                 <tbody>
-                    {renderForm()}
+                
+                
                     {/* {renderList()} */}
-                    {renderBody()}
                 </tbody>
-            </table>
+                <tr>{renderForm()}</tr>
+            </table> 
+            <Medtable medlist={medlist}/>
         </>
+        
     )
-}
+};
