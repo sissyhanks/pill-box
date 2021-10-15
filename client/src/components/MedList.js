@@ -6,11 +6,11 @@ import axios from "axios";
 export default function MedList() {
 
     const [ title, setTitle ] = useState('');
-    const [ morning, setMorning ] = useState('false');
-    const [ afternoon, setAfternoon ] = useState('false');
-    const [ evening, setEvening ] = useState('false');
-    const [ night, setNight ] = useState('false');
-    const [ as_needed, setAsNeeded] = useState('false');
+    const [ morning, setMorning ] = useState(false);
+    const [ afternoon, setAfternoon ] = useState(false);
+    const [ evening, setEvening ] = useState(false);
+    const [ night, setNight ] = useState(false);
+    const [ as_needed, setAsNeeded] = useState(false);
 
     const handleInputChange = (e) => {
     const target = e.target;
@@ -44,6 +44,13 @@ export default function MedList() {
             } catch (err) {
               console.error(err);
             }
+
+        setTitle('');
+        setMorning(false);
+        setAfternoon(false);
+        setEvening(false);
+        setNight(false);
+        setAsNeeded(false);
           };
     const handleDeleteMed = async (event) => {
         event.preventDefault();
@@ -77,26 +84,26 @@ export default function MedList() {
             <div >
             <form onSubmit={handlenewMedSubmit} className="row g-3">
                 
-                <label for="title" className="form-label">Medication Name</label>
-                <input type="text"  className="form-label-inline" id="title" onChange={(e) => setTitle(e.target.value)} value={title} />
+                <label for="title" className="form-label"></label>
+                <input type="text"  className="form-label-inline" id="title" placeholder="Medication Name" onChange={(e) => setTitle(e.target.value)} value={title} />
                 
                 
                 <label for="setMorning" className="form-check-inline"></label>
-                <input type="checkbox"  className="form-check-inline" id="setMorning" onChange={(e) => setMorning(e.target.checked)} value={morning} />
+                <input type="checkbox"  className="form-check-inline" id="setMorning" checked={morning} onChange={(e) => setMorning(e.target.checked)} value={morning} />
                 
                 <label for="setAfternoon" className="form-check-inline"></label>
-                <input type="checkbox"  className="form-check-inline" id="setAfternoon" onChange={(e) => setAfternoon(e.target.checked)} value={afternoon} />
+                <input type="checkbox"  className="form-check-inline" id="setAfternoon" checked={afternoon} onChange={(e) => setAfternoon(e.target.checked)} value={afternoon} />
                 
                 <label for="setEvening" className="form-check-inline"></label>
-                <input type="checkbox"  className="form-check-inline" id="setEvening" onChange={(e) => setEvening(e.target.checked)} value={evening} />
+                <input type="checkbox"  className="form-check-inline" id="setEvening" checked={evening} onChange={(e) => setEvening(e.target.checked)} value={evening} />
                 
                 
                 <label for="inputEmail4" className="form-check-inline"></label>
-                <input type="checkbox"  className="form-check-inline" id="setNight" onChange={(e) => setNight(e.target.checked)} value={night} />
+                <input type="checkbox"  className="form-check-inline" id="setNight" checked={night} onChange={(e) => setNight(e.target.checked)} value={night} />
                 
                 
                 <label for="setAsNeeded" className="form-check-inline"></label>
-                <input type="checkbox"  className="form-check-inline" id="setAsNeeded" onChange={(e) => setAsNeeded(e.target.checked)} value={as_needed} />
+                <input type="checkbox"  className="form-check-inline" id="setAsNeeded" checked={as_needed} onChange={(e) => setAsNeeded(e.target.checked)} value={as_needed} />
                 
                   <div className="col-12">
   <button className="btn btn-outline-info" type="submit">
