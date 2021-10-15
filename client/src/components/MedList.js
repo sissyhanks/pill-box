@@ -35,6 +35,7 @@ export default function MedList() {
                 night,
                 as_needed,
             }
+           
             await axios.post(
                 "http://localhost:3001/api/users/saveMed",
                 medicineData
@@ -71,18 +72,17 @@ export default function MedList() {
             return <th key={index}>{key.toUpperCase()}</th>
         })
     }
-    const renderList = () => {
+//     const /= () => {
         
-        try {
-         axios.get(
-            "http://localhost:3001/api/users/getSingleUser")
-          .then(function(response){
-              console.log(response)
-          })
-        } catch (err){
-            console.error(err)
-        }
-}
+//         map(item => <div>{title}</div>)
+//             return(
+//                 <div></div>
+//             )
+//           })
+//         } catch (err){
+//             console.error(err)
+//         }
+// }
     const renderForm = () => {
         return(
             <div >
@@ -120,20 +120,34 @@ export default function MedList() {
         )}
 
     const renderBody = () => {
-        return medications && medications.map(({ id, title, morning, afternoon, evening, night, as_needed }) => {
-            return (
-                <tr key={id}>
-                    <td>{id}</td>
-                    <td>{title}</td>
-                    <td><input type="checkbox" id={`medication_${id}_morning`} checked={morning} aria-label={`Checkbox for ${title} in the morning`} /></td>
-                    <td><input type="checkbox" id={`medication_${id}_afternoon`} checked={afternoon} aria-label={`Checkbox for ${title} in the afternoon`} /></td>
-                    <td><input type="checkbox" id={`medication_${id}_evening`} checked={evening} aria-label={`Checkbox for ${title} in the evening`} /></td>
-                    <td><input type="checkbox" id={`medication_${id}_night`} checked={night} aria-label={`Checkbox for ${title} in the night`} /></td>
-                    <td><input type="checkbox" id={`medication_${id}_as_needed`} checked={as_needed} aria-label={`Checkbox for ${title} as needed`} /></td>
-                </tr>
-            )
-        })
-    }
+        try {
+        axios.get(
+           "http://localhost:3001/api/users/getSingleUser")
+         .then(function(response){
+           //   const medTitle = response.medList.title
+           //   const medmorning = response.medList.morning
+           //   const medafternoon =response.medList.afternoon
+           //   const medevening =response.medList.evening
+           //   const mednight= response.medList.night
+           //   const medas_needed= response.medList.as_needed
+           const medications = response.data
+           console.log(medications.medList[0])
+        // return medications.map(({ id, title, morning, afternoon, evening, night, as_needed }) => {
+        //     return (
+        //         <tr key={id}>
+        //             <td>{id}</td>
+        //             <td>{title}</td>
+        //             <td><input type="checkbox" id={`medication_${id}_morning`} checked={morning} aria-label={`Checkbox for ${title} in the morning`} /></td>
+        //             <td><input type="checkbox" id={`medication_${id}_afternoon`} checked={afternoon} aria-label={`Checkbox for ${title} in the afternoon`} /></td>
+        //             <td><input type="checkbox" id={`medication_${id}_evening`} checked={evening} aria-label={`Checkbox for ${title} in the evening`} /></td>
+        //             <td><input type="checkbox" id={`medication_${id}_night`} checked={night} aria-label={`Checkbox for ${title} in the night`} /></td>
+        //             <td><input type="checkbox" id={`medication_${id}_as_needed`} checked={as_needed} aria-label={`Checkbox for ${title} as needed`} /></td>
+        //         </tr>
+        //     )
+        // })
+    })}catch(err){
+        console.log(err)
+    }};
 
     return (
         <>
@@ -144,7 +158,7 @@ export default function MedList() {
                 </thead>
                 <tbody>
                     {renderForm()}
-                    {renderList()}
+                    {/* {renderList()} */}
                     {renderBody()}
                 </tbody>
             </table>
