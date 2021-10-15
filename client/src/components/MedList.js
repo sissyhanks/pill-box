@@ -71,7 +71,18 @@ export default function MedList() {
             return <th key={index}>{key.toUpperCase()}</th>
         })
     }
-
+    const renderList = () => {
+        
+        try {
+         axios.get(
+            "http://localhost:3001/api/users/getSingleUser")
+          .then(function(response){
+              console.log(response)
+          })
+        } catch (err){
+            console.error(err)
+        }
+}
     const renderForm = () => {
         return(
             <div >
@@ -133,6 +144,7 @@ export default function MedList() {
                 </thead>
                 <tbody>
                     {renderForm()}
+                    {renderList()}
                     {renderBody()}
                 </tbody>
             </table>

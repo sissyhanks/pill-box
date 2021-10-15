@@ -12,7 +12,11 @@ module.exports = {
     if (!foundUser) {
       return res.status(400).json({ message: 'Cannot find a user with this id!' });
     }
-
+    // const username = foundUser.username;
+    // const firstName = foundUser.firstName;
+    // const lastName = foundUser.lastName;
+    // const medList = foundUser.medList
+    // const response =[username, firstName, lastName, medList]
     res.json(foundUser);
   },
 
