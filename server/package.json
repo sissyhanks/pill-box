@@ -9,6 +9,9 @@
     "dev": "nodemon index.js",
     "watch": "nodemon server.js"
   },
+    "engines": {
+    "node": "14.16.1"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
