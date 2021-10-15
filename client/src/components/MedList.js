@@ -131,7 +131,7 @@ export default function MedList() {
            //   const mednight= response.medList.night
            //   const medas_needed= response.medList.as_needed
            const medications = response.data
-           console.log(medications.medList[0])
+           console.log(medications.medList)
         // return medications.map(({ id, title, morning, afternoon, evening, night, as_needed }) => {
         //     return (
         //         <tr key={id}>
