@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Form } from "react-bootstrap";
-import getRxcui from "../ApiFiles/RxcuiApi.js"
-
-
-//XXXX Ref MERN SearchBooks.js line 8
+import getRxcui from "../apifiles/RxcuiApi.js"
+import getInteraction from "../apifiles/InteractionApi.js";
 
 // Called from src/app.js
 export default function About() {
@@ -28,36 +26,51 @@ export default function About() {
     console.log("The first med to compare is: " + MedOne);
     console.log("The second med to compare is: " + MedTwo);
 
-
-// XXXX Not sure that we need this validity check
-    // check if form has everything (as per react-bootstrap docs)
-    // const form = event.currentTarget;
-    //   if (form.checkValidity() === false) {
-    //     event.preventDefault();
-    //     event.stopPropagation();
-    //   }
-
-    // try {
-    // } catch (err) {
-    //   console.error(err);
-    //   setShowAlert(true);
-    // }
-
     try {
       const response = await getRxcui(MedOne);
-      console.log("Variable Check 2: " + MedOne);
+      const response2 = await getRxcui(MedTwo)
+      // console.log("Variable Check 2: " + MedOne);
 
       if (!response.ok) {
         throw new Error('something went wrong!');
       }
 
-      const drugs  = await response.json();
-      // API Call is working
+      const drug1  = await response.json();
+      const drug2 = await response2.json();
+
+      const drug1name = drug1.drugGroup.name
+      const drug2name = drug2.drugGroup.name 
+
+      const drugarray1 = drug1.drugGroup.conceptGroup.length-1
+      const drugarray2 = drug2.drugGroup.conceptGroup.length-1
+
+      console.log(drugarray1)
+      console.log(drugarray2)
+
+      const drug1num = drug1.drugGroup.conceptGroup[drugarray1].conceptProperties[0].rxcui 
+      const drug2num = drug2.drugGroup.conceptGroup[drugarray2].conceptProperties[0].rxcui 
+
+      console.log("The RXCUI number for " + drug1name + " is: " + drug1num);
+      console.log("The RXCUI number for " + drug2name + " is: " + drug2num);
+
+      const interactionCheck = await getInteraction(drug1num, drug2num)
+      const intResponse = await interactionCheck.json();
+
+      const exists = JSON.stringify(intResponse).includes("DrugBank is intended for educational and scientific research purposes only and you expressly acknowledge and agree that use of DrugBank is at your sole risk.");
+      console.log(exists)
+    
+      // console.log(description)
+      if (exists == false) {
+        alert("No negative interactions found!")
+      } else{
+        const description =  intResponse.fullInteractionTypeGroup[0].fullInteractionType[0].interactionPair[0].description
+        alert(description + " Consult a medical professional.")
+      }
       
-      console.log("The RXCUI number for " + drugs.drugGroup.name + "is: " + drugs.drugGroup.conceptGroup[1].conceptProperties[0].rxcui );
-
-// XXXX We need to clear the form when we are finished
-
+      // Clear comparison Form
+      setMedicationOne('');
+      setMedicationTwo('');
+      
     } catch (err) {
       console.error(err);
     }
@@ -94,9 +107,9 @@ export default function About() {
         </div>
       </div>
       <div className="container-fluid">
-        <div class="row">
+        <div className="row">
           <div
-            class="col-lg-12 text-center p-3"
+            className="col-lg-12 text-center p-3"
             style={{ backgroundColor: "#A2C4C9" }}
           >
             <Link to="/sign-up">Sign up</Link> to customize your medication
@@ -114,9 +127,8 @@ export default function About() {
           {/* div Holding Two Medication Input Fields */}
           <div className="col-md-6 pt-5">
 
-            <h2>Check Interactions between Medications</h2>
+            <h3>Check Interactions between Medications</h3>
 
-{/* See MERN SearchBooks.js line 86 */}
 {/* handleFormSubmit is at line 18 */}
             {/* Medication to Compare Form */}
             <Form onSubmit={handleFormSubmit}>
@@ -137,11 +149,6 @@ export default function About() {
                   required
                 />
 
-{/* XXX Form.Control not needed if required */}
-                {/* <Form.Control.Feedback type="invalid">
-                  Please enter a medication name.
-                </Form.Control.Feedback> */}
-
               </Form.Group>
               {/* End of Medication 1 to Compare */}
 
@@ -160,15 +167,10 @@ export default function About() {
                   required
                 />
 
-{/* XXX Form.Control not needed if required */}
-                {/* <Form.Control.Feedback type="invalid">
-                  Please enter a medication name.
-                </Form.Control.Feedback> */}
-
               </Form.Group>
               {/* End of Mediation 2 to Compare Form */}
 
-              <button className="btn btn-outline-info" type="submit">
+              <button className="btn btn-outline-info mb-2 mt-2" type="submit">
                 Compare
               </button>
 
@@ -188,6 +190,18 @@ export default function About() {
 
       </div>
       {/* End of div Container that Holds the Medication to Compare Form */}
+
+      <div className="container-fluid">
+        <div className="row">
+          <div
+            className="col-lg-12 text-center pt-3 pb-4"
+            style={{ backgroundColor: "#A2C4C9" }}
+          >
+            <p>{ alert }</p>
+          </div>
+        </div>
+      </div>
+
 
     </main>
   );
