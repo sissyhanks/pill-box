@@ -1,5 +1,5 @@
-const { User } = require('../models');
-const { Medicine } = require('../models');
+const { User } = require('../models/index');
+const { Medicine } = require('../models/index');
 const { signToken } = require('../utils/auth');
 const jwt = require('jsonwebtoken');
 
