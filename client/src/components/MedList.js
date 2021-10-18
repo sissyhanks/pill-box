@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Medtable from "./Medtable";
 
+
 export default function MedList() {
 
     const [ title, setTitle ] = useState('');
@@ -12,21 +13,9 @@ export default function MedList() {
     const [ night, setNight ] = useState(false);
     const [ as_needed, setAsNeeded] = useState(false);
 
-    const handleInputChange = (e) => {
-    const target = e.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
-
-    this.setState({
-      [name]: value
-    });
-  }
-    
-
     const handlenewMedSubmit = async (event) => {
-        event.preventDefault();
-
-        try{
+        
+        try {
             const medicineData = {
                 title,
                 morning,
@@ -35,13 +24,13 @@ export default function MedList() {
                 night,
                 as_needed,
             }
-           
+
             await axios.post(
                 "http://localhost:3001/api/users/saveMed",
                 medicineData
-              );
-             
-            } catch (err) {
+            );
+              
+        } catch (err) {
               console.error(err);
             }
 
@@ -51,8 +40,16 @@ export default function MedList() {
         setEvening(false);
         setNight(false);
         setAsNeeded(false);
-          };
-    
+    };  
+
+    const handleDeleteMed = async (event) => {
+        event.preventDefault();
+        try{
+            
+        } catch (err){
+            console.error(err)
+        }
+    };
 
     const [medications, setMedications] = React.useState([])
     const [medlist, getMedList] = useState('');
@@ -64,10 +61,9 @@ export default function MedList() {
 
     const getData = async () => {
         setMedications()
-        
     }
-
-    const getUserData = () => {
+    
+        const getUserData = () => {
         axios.get("http://localhost:3001/api/users/getSingleUser")
         .then((response) => {
             const medlist = response.data.medList
@@ -76,76 +72,73 @@ export default function MedList() {
         })
         .catch(error => console.log(error));
       }
-          
 
-    const renderHeader = () => {
-        let headerElement = ['id', 'title', 'morning', 'afternoon', 'evening', 'night', 'as needed']
+        const renderForm = () => {
+            return (
+                    <>
+                    <h3 className="mt-4 mb-4">Add a Medication to your List</h3>
 
-        return headerElement.map((key, index) => {
-            return <th key={index}>{key.toUpperCase()}</th>
-        })
-    }
-
-    const renderForm = () => {
-        return(
-            <div>
-            <form onSubmit={handlenewMedSubmit} className="row g-3">
-                
-                <label for="title" className="form-label"></label>
-                <input type="text"  className="form-label-inline" id="title" placeholder="Medication Name" onChange={(e) => setTitle(e.target.value)} value={title} />
-                
-                
-                <label for="setMorning" className="form-check-inline"></label>
-                <input type="checkbox"  className="form-check-inline" id="setMorning" checked={morning} onChange={(e) => setMorning(e.target.checked)} value={morning} />
-                
-                <label for="setAfternoon" className="form-check-inline"></label>
-                <input type="checkbox"  className="form-check-inline" id="setAfternoon" checked={afternoon} onChange={(e) => setAfternoon(e.target.checked)} value={afternoon} />
-                
-                <label for="setEvening" className="form-check-inline"></label>
-                <input type="checkbox"  className="form-check-inline" id="setEvening" checked={evening} onChange={(e) => setEvening(e.target.checked)} value={evening} />
-                
-                
-                <label for="inputEmail4" className="form-check-inline"></label>
-                <input type="checkbox"  className="form-check-inline" id="setNight" checked={night} onChange={(e) => setNight(e.target.checked)} value={night} />
-                
-                
-                <label for="setAsNeeded" className="form-check-inline"></label>
-                <input type="checkbox"  className="form-check-inline" id="setAsNeeded" checked={as_needed} onChange={(e) => setAsNeeded(e.target.checked)} value={as_needed} />
-                
-                  <div className="col-12">
-                    <button className="btn btn-outline-info" type="submit">
-                add med
-              </button>
-
-              </div>
-            </form>
-            </div>
+                        <form onSubmit={handlenewMedSubmit}>
+                            <div className="form-group row">
+                                <label htmlFor="title" className="col-sm-2 col-form-label">Medication Name</label>
+                                <div className="col-sm-10">
+                                    <input type="text" className="form-control" id="title" placeholder="Medication Name" onChange={(e) => setTitle(e.target.value)} value={title} />
+                                </div>
+                            </div>
+                            <div className="form-group row">
+                                <div className="col-sm-2">
+                                    Schedule
+                                </div>
+                                <div className="col-sm-10">
+                                    <div className="form-check">
+                                        <input type="checkbox" className="form-check-input" id="setMorning" checked={morning} onChange={(e) => setMorning(e.target.checked)} value={morning} />
+                                        <label htmlFor="setMorning" className="form-check-label">Morning</label>
+                                    </div>
+                                    <div className="form-check">   
+                                        <input type="checkbox" className="form-check-input" id="setAfternoon" checked={afternoon} onChange={(e) => setAfternoon(e.target.checked)} value={afternoon} />
+                                        <label htmlFor="setAfternoon" className="form-check-label">Afternoon</label>
+                                    </div>
+                                    <div className="form-check">
+                                        <input type="checkbox" className="form-check-input" id="setEvening" checked={evening} onChange={(e) => setEvening(e.target.checked)} value={evening} />
+                                        <label htmlFor="setEvening" className="form-check-label">Evening</label>
+                                    </div>
+                                    <div className="form-check">
+                                        <input type="checkbox"  className="form-check-input" id="setNight" checked={night} onChange={(e) => setNight(e.target.checked)} value={night} />
+                                        <label htmlFor="inputEmail4" className="form-check-label">Night</label>
+                                    </div>
+                                    <div className="form-check">
+                                        <input type="checkbox" className="form-check-input" id="setAsNeeded" checked={as_needed} onChange={(e) => setAsNeeded(e.target.checked)} value={as_needed} />
+                                        <label htmlFor="setAsNeeded" className="form-check-label">As Needed</label>
+                                    </div>
+                                </div>
+                                <div className="form-group row">
+                                    <div className="col-12">
+                                        <button className="mt-3 btn btn-outline-info" type="submit">
+                                            Add Medication
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </>
         )}
-
-  
-  
-
-    
-    
 
     return (
         <>
-            <h1 id='title'>Your Medication List</h1>
-            
-            <table className='table table-striped'>
-                <thead>
-                    <tr>{renderHeader()}</tr>
-                    
-                </thead>
-                <tbody>
-                
-                
-                    {/* {renderList()} */}
-                </tbody>
-                <tr>{renderForm()}</tr>
-            </table> 
-            <Medtable medlist={medlist}/>
+            <div className="container">
+                <div className="row">
+                    <div className="col-md-12">
+                        <h1 className="mt-4 mb-4">Your Medication List</h1>
+                        <Medtable medlist={medlist} />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-md-12">
+                        <hr />
+                        {renderForm()}
+                    </div>
+                </div>
+            </div>
         </>
-        
     )
-};
+}

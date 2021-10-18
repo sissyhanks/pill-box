@@ -18,7 +18,7 @@ router.route('/logout').get(logout);
 router.route('/loggedin').get(loggedin);
 router.route('/getSingleUser').get(authMiddleware, getSingleUser);
 router.route('/saveMed').post(authMiddleware, saveMed);
-router.route('/deleteMed').get(deleteMed);
+router.route('/deleteMed').get(authMiddleware, deleteMed);
 
 
 module.exports = router;

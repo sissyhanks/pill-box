@@ -1,5 +1,5 @@
 const { Schema, model } = require('mongoose');
-const medicineSchema = require('./Medicine');
+const medicineSchema = require('./medicine');
 const bcrypt = require('bcrypt');
 
 const UserSchema = new Schema(
@@ -22,7 +22,6 @@ const UserSchema = new Schema(
     password: {
       type: String,
       required: true,
-      select: false
     },
     email: {
       type: String,
@@ -32,11 +31,11 @@ const UserSchema = new Schema(
     },
     medList: [medicineSchema],
   },
-  {
-    toJSON: {
-      virtuals: true,
-    },
-  }
+  // {
+  //   toJSON: {
+  //     virtuals: true,
+  //   },
+  // }
   );
 
 UserSchema.pre('save', async function (next) {
@@ -54,7 +53,7 @@ UserSchema.methods.isCorrectPassword = async function (password) {
 };
 
 // medicineSchema.virtual('medCount').get(function () {
-//   return this.savedMeds.length;
+//   return this.medList.length;
 // });
 
 const User = model('User', UserSchema);

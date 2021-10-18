@@ -7,7 +7,6 @@ const expiration = '2h';
 module.exports = {
   authMiddleware: function (req, res, next) {
     const token = req.cookies.token;
-    
 
     if (!token) {
       return res.status(400).json({ message: 'You have no token!' });

@@ -12,11 +12,7 @@ module.exports = {
     if (!foundUser) {
       return res.status(400).json({ message: 'Cannot find a user with this id!' });
     }
-    // const username = foundUser.username;
-    // const firstName = foundUser.firstName;
-    // const lastName = foundUser.lastName;
-    // const medList = foundUser.medList
-    // const response =[username, firstName, lastName, medList]
+
     res.json(foundUser);
   },
 
@@ -35,7 +31,9 @@ module.exports = {
       return res.status(400).json({ message: 'Something is wrong!' });
     }
     const token = signToken(newUser);
-      res.cookie("token", token, {
+    // res.json({ token, newUser });
+    res
+      .cookie("token", token, {
         httpOnly: true,
         secure: true,
         sameSite: "none",
@@ -45,7 +43,7 @@ module.exports = {
 
 //login
   async login({ body }, res) {
-    const user = await User.findOne({ email: body.email});
+    const user = await User.findOne({ email: body.email });
 
     if(!user) {
       return res.status(410).json({ errorMessage: "Incorrect username or password" });
@@ -91,8 +89,7 @@ module.exports = {
   }
   },
 
-
-  async saveMed({ user, body}, res) {
+  async saveMed({ user, body }, res) {
     console.log(user);
     try {
       const updatedUser = await User.findOneAndUpdate(
@@ -106,7 +103,7 @@ module.exports = {
       return res.status(400).json(err);
     }
   },
-  // remove a book from `savedBooks`
+
   async deleteMed({ user, params }, res) {
     const updatedUser = await User.findOneAndUpdate(
       { _id: user._id },
