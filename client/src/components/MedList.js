@@ -26,7 +26,7 @@ export default function MedList() {
             }
 
             await axios.post(
-                "http://localhost:3001/api/users/saveMed",
+                "https://aqueous-ocean-83176.herokuapp.com/api/users/saveMed",
                 medicineData
             );
               
@@ -64,7 +64,7 @@ export default function MedList() {
     }
     
         const getUserData = () => {
-        axios.get("http://localhost:3001/api/users/getSingleUser")
+        axios.get("https://aqueous-ocean-83176.herokuapp.com/api/users/getSingleUser")
         .then((response) => {
             const medlist = response.data.medList
             console.log(medlist)

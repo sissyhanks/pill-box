@@ -34,6 +34,8 @@ app.use(
     origin: [
       "http://localhost:3000",
       "http://localhost:3001",
+      "https://aqueous-ocean-83176.herokuapp.com/",
+      
     ],
     credentials: true,
   })

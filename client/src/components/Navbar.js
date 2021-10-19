@@ -26,7 +26,7 @@ const handleFormSubmit = async (event) => {
       };
 
       await axios.post(
-        "http://localhost:3001/api/users/login",
+        "https://aqueous-ocean-83176.herokuapp.com/api/users/login",
         registerData,
         { withCredentials: true }
       );
@@ -39,7 +39,7 @@ const handleFormSubmit = async (event) => {
 
   const handleLogOut = async (event) => {
       await axios.get(
-      "http://localhost:3001/api/users/logout"
+      "https://aqueous-ocean-83176.herokuapp.com/api/users/logout"
     );
     await getLoggedIn();
     history.push("/");

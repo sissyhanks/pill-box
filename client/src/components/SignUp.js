@@ -27,7 +27,7 @@ export default function SignUp() {
       };
 
       await axios.post(
-        "http://localhost:3001/api/users/register",
+        "https://aqueous-ocean-83176.herokuapp.com/api/users/register",
         registerData,
         { withCredentials: true }
       );
